@@ -10,7 +10,7 @@ const messages = [
   { id: 2, text: "You bring so much light into the world.", subtitle: "Every single day you make things brighter.", align: "center", icon: <Heart className="text-primary w-5 h-5 md:w-6 md:h-6" /> },
   { id: 3, text: "So today, we celebrate YOU.", subtitle: "Your energy, your smile, and everything that makes you unique.", align: "center", icon: <Sparkles className="text-gold w-5 h-5 md:w-6 md:h-6" /> },
   { id: 4, text: "May this year bring you closer to your dreams.", subtitle: "Because you truly deserve all the happiness.", align: "center", icon: <Heart className="text-primary w-5 h-5 md:w-6 md:h-6" /> },
-  { id: 5, text: "Happy Birthday. 🎉", subtitle: "Bhot angrezi bol diya na? Chaliye Hinglish me baat karte hai abb.", align: "center", icon: <Sparkles className="text-gold w-5 h-5 md:w-6 md:h-6" /> }
+  { id: 5, text: "Happy Birthday. 🎉", subtitle: "Bhot angrezi bol diya na? Chaliye hindi me hi baat karte hai...", align: "center", icon: <Sparkles className="text-gold w-5 h-5 md:w-6 md:h-6" /> }
 ];
 
 export default function Story() {
