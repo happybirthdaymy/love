@@ -6,11 +6,41 @@ import Hero from './components/Hero';
 import Story from './components/Story';
 import Reveal from './components/Reveal';
 import NoPage from './components/NoPage';
+import CelebratePage from './components/CelebratePage';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [page, setPage] = useState('main');
+  
+  // Initialize page from browser history, or default to main
+  const [page, setPage] = useState(() => {
+    return window.history.state?.page || 'main';
+  });
+  
   const [lenisInstance, setLenisInstance] = useState(null);
+
+  // Handle browser back/forward buttons natively
+  useEffect(() => {
+    const handlePopState = (event) => {
+      setPage(event.state?.page || 'main');
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    
+    // Register the very first page load in history so 'back' works correctly
+    if (!window.history.state) {
+      window.history.replaceState({ page }, '');
+    }
+
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Use this custom function to change pages so it adds to browser history
+  const navigateTo = (newPage) => {
+    if (page !== newPage) {
+      window.history.pushState({ page: newPage }, '');
+      setPage(newPage);
+    }
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 2000);
@@ -54,11 +84,8 @@ function App() {
     }
   }, [page, lenisInstance]);
 
-  const handleNo = () => setPage('no');
-  const handleYes = () => {
-    setPage('main');
-    setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
-  };
+  const handleNo = () => navigateTo('no');
+  const handleYes = () => navigateTo('celebrate');
 
   return (
     <>
@@ -96,7 +123,7 @@ function App() {
       <div
         className="relative text-white font-sans selection:bg-fuchsia-500/30"
         style={{
-          display: page === 'no' ? 'none' : 'block',
+          display: page === 'main' ? 'block' : 'none',
           // No background color — the fixed Scene3D div above provides it
         }}
       >
@@ -111,6 +138,13 @@ function App() {
       <AnimatePresence>
         {page === 'no' && (
           <NoPage onYes={handleYes} onNo={handleNo} />
+        )}
+      </AnimatePresence>
+
+      {/* Celebrate Page */}
+      <AnimatePresence>
+        {page === 'celebrate' && (
+          <CelebratePage />
         )}
       </AnimatePresence>
     </>

@@ -70,7 +70,7 @@ export default function NoPage({ onYes, onNo }) {
 
         {/* Line 1 */}
         <p ref={line1Ref} className="text-2xl sm:text-3xl md:text-5xl font-medium text-white/80 leading-snug tracking-tight opacity-0">
-          {toChars('Bola tha na nhi click karne ispe?? 😒')}
+          {toChars('Bola tha na nhi click kalne uspe?? 😒')}
         </p>
 
         {/* Line 2 */}
@@ -87,11 +87,11 @@ export default function NoPage({ onYes, onNo }) {
           <span className="text-gold font-medium">
             {toChars("Let's Celebrate")}
           </span>
-          {toChars(' pe click karo aur ')}
+          {toChars(' pe click kalo aul ')}
           <span className="text-primary font-medium">
-            {toChars('No Celebration')}
+            {toChars('No Celebrations')}
           </span>
-          {toChars(' pe nahi karna 😒')}
+          {toChars(' pe click nahi kalna 😒')}
         </p>
 
         {/* Buttons */}
@@ -110,7 +110,7 @@ export default function NoPage({ onYes, onNo }) {
             onClick={onNo}
             className="w-full sm:w-auto px-10 py-3 md:px-12 md:py-4 bg-gradient-to-r from-gold to-primary text-black rounded-full font-bold text-lg md:text-xl hover:scale-105 hover:shadow-[0_0_40px_rgba(212,175,55,0.5)] transition-all duration-300"
           >
-            No Celebration 🙂
+            No Celebrations 🙂
           </button>
         </div>
       </div>

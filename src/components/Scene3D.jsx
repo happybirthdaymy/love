@@ -39,9 +39,9 @@ export default function Scene3D() {
   return (
     <Canvas 
       camera={{ position: [0, 0, 5], fov: 45 }} 
-      dpr={[1, 1.5]} 
+      dpr={1} 
       className="w-full h-full" 
-      gl={{ antialias: false, powerPreference: "high-performance" }}
+      gl={{ antialias: false, powerPreference: "high-performance", alpha: false }}
     >
       <ambientLight intensity={0.4} />
       <directionalLight position={[10, 10, 5]} intensity={1.5} color="#d4af37" />

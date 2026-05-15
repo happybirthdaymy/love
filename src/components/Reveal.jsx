@@ -81,7 +81,7 @@ export default function Reveal({ onNo, onYes }) {
     return () => ctx.revert();
   }, []);
 
-  const typewriterText = "Now be a good boy aul in dono mese kisi ek pe click kalo bammchi ni No Celebration pe ni kalna";
+  const typewriterText = "Now be a good boy aul in dono mese kisi ek pe click kalo bammchi ni No Celebrations pe ni kalna";
 
   return (
     <section ref={containerRef} className="relative flex flex-col items-center justify-center min-h-screen pt-20 md:pt-32 pb-[50vh] px-4 md:px-12 overflow-hidden z-10">
@@ -117,7 +117,7 @@ export default function Reveal({ onNo, onYes }) {
             onClick={onNo}
             className="w-full sm:w-auto px-10 py-3 md:px-12 md:py-4 bg-gradient-to-r from-gold to-primary text-black rounded-full font-bold text-lg md:text-xl hover:scale-105 hover:shadow-[0_0_40px_rgba(212,175,55,0.5)] transition-all duration-300"
           >
-            No Celebration 🙂
+            No Celebrations 🙂
           </button>
         </div>
       </div>

@@ -1,0 +1,122 @@
+.cake-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* The SVG is 500px tall but the cake is at the bottom (y=400+).
+     Translate Y by -80% to put the cake exactly in the center of the screen! */
+  transform: translate(-50%, -80%) scale(0.9);
+  width: 200px;
+  height: 500px;
+}
+
+@media (min-width: 640px) {
+  .cake-container {
+    transform: translate(-50%, -80%) scale(1.2);
+  }
+}
+
+@media (min-width: 1024px) {
+  .cake-container {
+    transform: translate(-50%, -80%) scale(1.5);
+  }
+}
+
+#cake {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ============================================== Candle */
+.velas {
+  background: #ffffff;
+  border-radius: 10px;
+  position: absolute;
+  /* Top of cake is approx y=415. With height 60px, top should be 355px */
+  top: 355px; 
+  left: 50%;
+  margin-left: -5px; /* Half of 10px width */
+  margin-top: 0;
+  width: 10px;
+  height: 60px;
+  transform: translateY(-500px);
+  backface-visibility: hidden;
+  animation: velasIn 500ms 5s ease-out forwards;
+  z-index: 10;
+}
+
+.velas:after,
+.velas:before {
+  background: rgba(255, 0, 0, 0.4);
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 4px;
+}
+
+.velas:after {
+  top: 25%;
+  left: 0;
+}
+
+.velas:before {
+  top: 45%;
+  left: 0;
+}
+
+/* ============================================== Fire */
+.fuego {
+  border-radius: 100%;
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  margin-left: -6px; /* Half of 12px width */
+  width: 12px;
+  height: 30px;
+}
+
+.fuego:nth-child(1) {
+  animation: fuego 2s 5.5s infinite;
+}
+
+.fuego:nth-child(2) {
+  animation: fuego 1.5s 5.5s infinite;
+}
+
+.fuego:nth-child(3) {
+  animation: fuego 1s 5.5s infinite;
+}
+
+.fuego:nth-child(4) {
+  animation: fuego 0.5s 5.5s infinite;
+}
+
+.fuego:nth-child(5) {
+  animation: fuego 0.2s 5.5s infinite;
+}
+
+/* ============================================== Animation Fire */
+@keyframes fuego {
+
+  0%,
+  100% {
+    background: rgba(254, 248, 97, 0.8);
+    box-shadow: 0 0 40px 10px rgba(248, 233, 209, 0.2);
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    background: rgba(255, 50, 0, 0.2);
+    box-shadow: 0 0 40px 20px rgba(248, 233, 209, 0.2);
+    transform: translateY(-20px) scale(0);
+  }
+}
+
+@keyframes velasIn {
+  to {
+    transform: translateY(0);
+  }
+}
