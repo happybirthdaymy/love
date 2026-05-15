@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
+
+gsap.registerPlugin(ScrollTrigger);
 import { AnimatePresence, motion } from 'framer-motion';
 import Scene3D from './components/Scene3D';
 import Hero from './components/Hero';
@@ -72,7 +76,6 @@ function App() {
 
     return () => lenis.destroy();
   }, [isLoading]);
-
   // Lock/unlock scroll when page changes
   useEffect(() => {
     if (page === 'no') {
@@ -81,6 +84,13 @@ function App() {
     } else {
       if (lenisInstance) lenisInstance.start();
       document.body.style.overflow = '';
+    }
+
+    if (page === 'main') {
+      // Refresh ScrollTrigger after the main page is set back to display: block
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 100);
     }
   }, [page, lenisInstance]);
 
