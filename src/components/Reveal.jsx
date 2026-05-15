@@ -5,7 +5,7 @@ import confetti from 'canvas-confetti';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function Reveal() {
+export default function Reveal({ onNo, onYes }) {
   const containerRef = useRef(null);
   const textContainerRef = useRef(null);
   const hasFired = useRef(false);
@@ -81,7 +81,7 @@ export default function Reveal() {
     return () => ctx.revert();
   }, []);
 
-  const typewriterText = "Haa chaliye abb in dono me se kisi ek pe click kariye aur galti se bhi no click mat kariyega...";
+  const typewriterText = "Now be a good boy aul in dono mese kisi ek pe click kalo bammchi ni No Celebration pe ni kalna";
 
   return (
     <section ref={containerRef} className="relative flex flex-col items-center justify-center min-h-screen pt-20 md:pt-32 pb-[50vh] px-4 md:px-12 overflow-hidden z-10">
@@ -107,16 +107,17 @@ export default function Reveal() {
 
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-center button-reveal opacity-0 scale-90 translate-y-8 w-full sm:w-auto">
           <button 
-            onClick={fireConfetti}
+            onClick={onYes}
             className="w-full sm:w-auto px-10 py-3 md:px-12 md:py-4 bg-gradient-to-r from-gold to-primary text-black rounded-full font-bold text-lg md:text-xl hover:scale-105 hover:shadow-[0_0_40px_rgba(212,175,55,0.5)] transition-all duration-300"
           >
-            Yes
+            Let's Celebrate 😁
           </button>
           
           <button 
+            onClick={onNo}
             className="w-full sm:w-auto px-10 py-3 md:px-12 md:py-4 bg-gradient-to-r from-gold to-primary text-black rounded-full font-bold text-lg md:text-xl hover:scale-105 hover:shadow-[0_0_40px_rgba(212,175,55,0.5)] transition-all duration-300"
           >
-            No
+            No Celebration 🙂
           </button>
         </div>
       </div>

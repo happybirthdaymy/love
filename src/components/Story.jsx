@@ -10,7 +10,7 @@ const messages = [
   { id: 2, text: "You bring so much light into the world.", subtitle: "Every single day you make things brighter.", align: "center", icon: <Heart className="text-primary w-5 h-5 md:w-6 md:h-6" /> },
   { id: 3, text: "So today, we celebrate YOU.", subtitle: "Your energy, your smile, and everything that makes you unique.", align: "center", icon: <Sparkles className="text-gold w-5 h-5 md:w-6 md:h-6" /> },
   { id: 4, text: "May this year bring you closer to your dreams.", subtitle: "Because you truly deserve all the happiness.", align: "center", icon: <Heart className="text-primary w-5 h-5 md:w-6 md:h-6" /> },
-  { id: 5, text: "Happy Birthday. 🎉", subtitle: "Bhot angrezi bol diya na? Chaliye hindi me hi baat karte hai...", align: "center", icon: <Sparkles className="text-gold w-5 h-5 md:w-6 md:h-6" /> }
+  { id: 5, text: "HAPPYYY WALAAA BIRTHDAYYY BABUA✨️", subtitle: "Bhot angrezi bol diya na? Chaliye hindi me hi baat karte hai...", align: "center", icon: <Sparkles className="text-gold w-5 h-5 md:w-6 md:h-6" />, emphasis: true },
 ];
 
 export default function Story() {
@@ -55,7 +55,9 @@ export default function Story() {
           >
             <div 
               ref={el => cardsRef.current[i] = el}
-              className="glass-card p-6 sm:p-10 md:p-14 rounded-3xl md:rounded-[2.5rem] max-w-[90%] md:max-w-2xl transform-gpu will-change-transform flex flex-col items-center text-center gap-3 md:gap-4 relative group"
+              className={`glass-card p-6 sm:p-10 md:p-14 rounded-3xl md:rounded-[2.5rem] transform-gpu will-change-transform flex flex-col items-center text-center gap-3 md:gap-4 relative group ${
+                msg.emphasis ? 'max-w-[92%] w-full sm:max-w-lg md:max-w-3xl' : 'max-w-[90%] md:max-w-2xl'
+              }`}
             >
               <div className="absolute inset-0 bg-gradient-to-br from-gold/5 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-3xl md:rounded-[2.5rem] pointer-events-none" />
               
@@ -63,7 +65,13 @@ export default function Story() {
                 {msg.icon}
               </div>
               
-              <h3 className="text-2xl sm:text-3xl md:text-5xl font-medium leading-snug md:leading-tight text-white/95 tracking-tight relative z-10">
+              <h3
+                className={`font-medium text-white/95 relative z-10 text-balance break-words hyphens-auto ${
+                  msg.emphasis
+                    ? 'text-lg leading-[1.3] tracking-tight sm:text-2xl sm:leading-snug md:text-4xl md:leading-tight lg:text-5xl'
+                    : 'text-2xl sm:text-3xl md:text-5xl leading-snug md:leading-tight tracking-tight'
+                }`}
+              >
                 {msg.text}
               </h3>
               

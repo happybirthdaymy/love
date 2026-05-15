@@ -62,7 +62,7 @@ export default function Hero() {
         </h1>
         
         <p ref={subtitleRef} className="text-base sm:text-lg md:text-2xl text-white/70 max-w-2xl mx-auto font-light leading-relaxed will-change-transform px-4">
-          Don't just stand there... scroll down, birthday human!!!
+          Idhal ni hai kuch baby  just scroll down
         </p>
 
         <div className="hero-element mt-16 md:mt-24 animate-bounce text-gold/60 flex flex-col items-center gap-3 md:gap-4">
