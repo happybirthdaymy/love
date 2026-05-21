@@ -1,16 +1,23 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './CelebratePage.css';
-
-function SVGCake() {
+import pic1 from '../assets/pic1.png';
+import pic2 from '../assets/pic2.png';
+import pic3 from '../assets/pic3.png';
+import pic6 from '../assets/pic6.png';
+function SVGCake({ candlesBlown, onBlowOut }) {
   return (
     <div className="cake-container">
-      <div className="velas">
-        <div className="fuego"></div>
-        <div className="fuego"></div>
-        <div className="fuego"></div>
-        <div className="fuego"></div>
-        <div className="fuego"></div>
+      <div
+        className="velas"
+        onClick={onBlowOut}
+        style={{ cursor: candlesBlown ? 'default' : 'pointer', pointerEvents: 'auto' }}
+      >
+        <div className={`fuego ${candlesBlown ? 'extinguished' : ''}`}></div>
+        <div className={`fuego ${candlesBlown ? 'extinguished' : ''}`}></div>
+        <div className={`fuego ${candlesBlown ? 'extinguished' : ''}`}></div>
+        <div className={`fuego ${candlesBlown ? 'extinguished' : ''}`}></div>
+        <div className={`fuego ${candlesBlown ? 'extinguished' : ''}`}></div>
       </div>
       <svg
         id="cake"
@@ -258,18 +265,207 @@ function SVGCake() {
 }
 
 export default function CelebratePage() {
+  const [phase, setPhase] = useState('introText'); // 'introText' | 'waiting' | 'cake'
+  const [candlesBlown, setCandlesBlown] = useState(false);
+
+  useEffect(() => {
+    if (phase === 'introText') {
+      const timer = setTimeout(() => setPhase('waiting'), 4000);
+      return () => clearTimeout(timer);
+    }
+    if (phase === 'waiting') {
+      // 1 second for the text to exit, plus 0.5 seconds of blank screen
+      const timer = setTimeout(() => setPhase('cake'), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [phase]);
+  const sparkles = [
+    { top: '12%', left: '15%', size: 14, delay: '0.2s', duration: '4s' },
+    { top: '25%', left: '85%', size: 18, delay: '1.2s', duration: '5.5s' },
+    { top: '78%', left: '8%', size: 16, delay: '2.4s', duration: '4.8s' },
+    { top: '82%', left: '88%', size: 22, delay: '0.8s', duration: '6.5s' },
+    { top: '15%', left: '72%', size: 12, delay: '3.1s', duration: '3.8s' },
+    { top: '48%', left: '6%', size: 16, delay: '1.8s', duration: '4.2s' },
+  ];
+
+  // Optimized count of unique bokeh rise particles on mount (8 high-performance particles)
+  const bokehParticles = useState(() =>
+    Array.from({ length: 8 }).map((_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      size: `${Math.random() * 8 + 4}px`,
+      delay: `${Math.random() * 8}s`,
+      duration: `${Math.random() * 8 + 10}s`,
+      driftX: `${(Math.random() - 0.5) * 60}px`,
+    }))
+  )[0];
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#050505] overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-[#050505]">
       <AnimatePresence mode="wait">
-        <motion.div
-          key="cake"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="absolute inset-0 w-full h-full"
-        >
-          <SVGCake />
+        {phase === 'introText' && (
+          <motion.div
+            key="intro-text"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.05 }}
+            transition={{ duration: 1, ease: 'easeInOut' }}
+            style={{ willChange: 'opacity, transform' }}
+            className="absolute inset-0 flex items-center justify-center z-[60]"
+          >
+            <motion.h1 
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: { staggerChildren: 0.08, delayChildren: 0.5 }
+                }
+              }}
+              className="text-white text-3xl md:text-4xl font-bold tracking-[0.2em] text-center px-6 leading-relaxed"
+            >
+              {"Happy 17th Birthday Babuaaaa✨️✨️".split(' ').map((word, wordIndex, array) => (
+                <span key={wordIndex} style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
+                  {word.split('').map((char, charIndex) => (
+                    <motion.span
+                      key={charIndex}
+                      variants={{
+                        hidden: { opacity: 0, y: 10, filter: 'blur(4px)' },
+                        visible: { opacity: 1, y: 0, filter: 'blur(0px)' }
+                      }}
+                      style={{ display: 'inline-block' }}
+                    >
+                      {char}
+                    </motion.span>
+                  ))}
+                  {wordIndex !== array.length - 1 && (
+                    <span style={{ display: 'inline-block', width: '0.4em' }}></span>
+                  )}
+                </span>
+              ))}
+            </motion.h1>
+          </motion.div>
+        )}
+
+        {phase === 'cake' && (
+          <motion.div
+            key="celebrate-stage"
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            style={{ willChange: 'transform, opacity' }}
+            className="absolute inset-0 w-full h-full celebrate-backdrop"
+          >
+          {/* Layer 1: Ambient Vignette for cinematic focus */}
+          <div className="cinema-vignette" />
+
+          {/* Layer 2: Beautiful Glowing Glassmorphic Pink & Violet Orbs */}
+          <div className="orbs-container">
+            <div className="orb orb-1" />
+            <div className="orb orb-2" />
+            <div className="orb orb-3" />
+            <div className="orb orb-4" />
+          </div>
+
+          {/* Layer 3: Sleek Aesthetic Pink Dot Grid */}
+          <div className="dots-grid-overlay" />
+
+          {/* Layer 3.5: Beautiful Tilted Background Pictures */}
+          <div className="background-gallery">
+            <img src={pic1} className="bg-pic pic-1" alt="" />
+            <img src={pic2} className="bg-pic pic-2" alt="" />
+            <img src={pic3} className="bg-pic pic-3" alt="" />
+            <img src={pic6} className="bg-pic pic-6" alt="" />
+          </div>
+
+          {/* Layer 4: Delicate Twinkling Star Sparkles */}
+          <div className="sparkles-container">
+            {sparkles.map((s, idx) => (
+              <svg
+                key={idx}
+                className="sparkle-star"
+                style={{
+                  top: s.top,
+                  left: s.left,
+                  width: `${s.size}px`,
+                  height: `${s.size}px`,
+                  animationDelay: s.delay,
+                  animationDuration: s.duration,
+                  color: idx % 3 === 0 ? '#fda4af' : idx % 3 === 1 ? '#fed7aa' : '#ffffff',
+                }}
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M12 0L14.6 9.4L24 12L14.6 14.6L12 24L9.4 14.6L0 12L9.4 9.4L12 0Z" />
+              </svg>
+            ))}
+          </div>
+
+          {/* Layer 5: Soft Rising Ambient Bokeh Lights */}
+          {bokehParticles.map((p) => (
+            <div
+              key={p.id}
+              className="bokeh-element"
+              style={{
+                left: p.left,
+                width: p.size,
+                height: p.size,
+                animationDelay: p.delay,
+                animationDuration: p.duration,
+                '--drift-x': p.driftX,
+                bottom: '-20px',
+              }}
+            />
+          ))}
+
+
+
+          {/* Layer 7: Typewriter Instruction Text */}
+          <AnimatePresence>
+            {!candlesBlown && (
+              <motion.div
+                className="typewriter-text"
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: {
+                    opacity: 1,
+                    transition: { staggerChildren: 0.05, delayChildren: 6.5 }
+                  },
+                  exit: { opacity: 0, scale: 0.9, transition: { duration: 0.5 } }
+                }}
+              >
+                {"Ok now click the candle flame sweetheart".split('').map((char, index) => (
+                  <motion.span
+                    key={index}
+                    variants={{
+                      hidden: { opacity: 0 },
+                      visible: { opacity: 1 }
+                    }}
+                  >
+                    {char}
+                  </motion.span>
+                ))}
+                <motion.span
+                  className="animated-heart"
+                  variants={{
+                    hidden: { opacity: 0, scale: 0.5 },
+                    visible: { opacity: 1, scale: 1 }
+                  }}
+                >
+                  ❤️
+                </motion.span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Layer 9: Perfectly Visually Centered SVG Cake */}
+          <SVGCake candlesBlown={candlesBlown} onBlowOut={() => setCandlesBlown(true)} />
         </motion.div>
+        )}
       </AnimatePresence>
     </div>
   );

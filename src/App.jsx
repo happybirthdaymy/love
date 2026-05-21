@@ -11,13 +11,14 @@ import Story from './components/Story';
 import Reveal from './components/Reveal';
 import NoPage from './components/NoPage';
 import CelebratePage from './components/CelebratePage';
+import SecurityPage from './components/SecurityPage';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   
-  // Initialize page from browser history, or default to main
+  // Initialize page from browser history, or default to security
   const [page, setPage] = useState(() => {
-    return window.history.state?.page || 'main';
+    return window.history.state?.page || 'security';
   });
   
   const [lenisInstance, setLenisInstance] = useState(null);
@@ -155,6 +156,12 @@ function App() {
       <AnimatePresence>
         {page === 'celebrate' && (
           <CelebratePage />
+        )}
+      </AnimatePresence>
+      {/* Security Page */}
+      <AnimatePresence>
+        {page === 'security' && (
+          <SecurityPage onUnlock={() => navigateTo('main')} />
         )}
       </AnimatePresence>
     </>

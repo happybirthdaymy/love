@@ -1,23 +1,29 @@
+/* ============================================== Cake Core Positions */
 .cake-container {
   position: absolute;
   top: 50%;
   left: 50%;
   /* The SVG is 500px tall but the cake is at the bottom (y=400+).
      Translate Y by -80% to put the cake exactly in the center of the screen! */
-  transform: translate(-50%, -80%) scale(0.9);
+  transform: translate3d(-50%, -80%, 0) scale(0.9);
   width: 200px;
   height: 500px;
+  z-index: 12;
+  pointer-events: none;
+  /* Let clicks pass through if needed */
+  will-change: transform;
+  /* Hardware acceleration promotion */
 }
 
 @media (min-width: 640px) {
   .cake-container {
-    transform: translate(-50%, -80%) scale(1.2);
+    transform: translate3d(-50%, -80%, 0) scale(1.2);
   }
 }
 
 @media (min-width: 1024px) {
   .cake-container {
-    transform: translate(-50%, -80%) scale(1.5);
+    transform: translate3d(-50%, -80%, 0) scale(1.5);
   }
 }
 
@@ -36,9 +42,10 @@
   border-radius: 10px;
   position: absolute;
   /* Top of cake is approx y=415. With height 60px, top should be 355px */
-  top: 355px; 
+  top: 355px;
   left: 50%;
-  margin-left: -5px; /* Half of 10px width */
+  margin-left: -5px;
+  /* Half of 10px width */
   margin-top: 0;
   width: 10px;
   height: 60px;
@@ -73,9 +80,10 @@
   position: absolute;
   top: -30px;
   left: 50%;
-  margin-left: -6px; /* Half of 12px width */
+  margin-left: -6px;
   width: 12px;
   height: 30px;
+  will-change: transform, opacity; /* Forces GPU hardware acceleration for low-end devices */
 }
 
 .fuego:nth-child(1) {
@@ -104,14 +112,15 @@
   0%,
   100% {
     background: rgba(254, 248, 97, 0.8);
-    box-shadow: 0 0 40px 10px rgba(248, 233, 209, 0.2);
-    transform: translateY(0) scale(1);
+    /* Optimized stacked blur radius for ultra-smooth rendering on budget phones */
+    box-shadow: 0 0 15px 4px rgba(248, 233, 209, 0.3);
+    transform: translate3d(0, 0, 0) scale(1);
   }
 
   50% {
     background: rgba(255, 50, 0, 0.2);
-    box-shadow: 0 0 40px 20px rgba(248, 233, 209, 0.2);
-    transform: translateY(-20px) scale(0);
+    box-shadow: 0 0 20px 8px rgba(248, 233, 209, 0.2);
+    transform: translate3d(0, -20px, 0) scale(0.3);
   }
 }
 
@@ -120,3 +129,387 @@
     transform: translateY(0);
   }
 }
+
+.fuego.extinguished {
+  /* Increased duration to 2 seconds for a slow, magical burn-out */
+  animation: extinguish 2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards !important;
+}
+
+@keyframes extinguish {
+  0% { 
+    transform: translate3d(0, 0, 0) scale(1); 
+    background: rgba(254, 248, 97, 0.8);
+    box-shadow: 0 0 40px 10px rgba(248, 233, 209, 0.2);
+    opacity: 1; 
+  }
+  20% { 
+    /* Hardware-accelerated translate3d and optimized box-shadow to prevent lag/jumpiness while maintaining the massive flare */
+    transform: translate3d(0, -15px, 0) scale(1.8) rotate(5deg); 
+    background: #ffffff;
+    box-shadow: 0 0 30px 15px rgba(255, 230, 100, 0.9), 0 0 50px 20px rgba(255, 120, 0, 0.7);
+    opacity: 1; 
+  }
+  60% { 
+    /* Smooth dying down */
+    transform: translate3d(0, -35px, 0) scale(0.8) rotate(-5deg); 
+    background: #ff5e00;
+    box-shadow: 0 0 15px 5px rgba(255, 50, 0, 0.5);
+    opacity: 0.8; 
+  }
+  100% { 
+    /* Hardware-accelerated smoke drift, removed grayscale filter which causes heavy CPU lag */
+    transform: translate3d(0, -90px, 0) scale(0) rotate(20deg); 
+    background: #333333;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    opacity: 0; 
+  }
+}
+
+.typewriter-text {
+  position: absolute;
+  bottom: 8%; /* Positioned beautifully below the cake */
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  white-space: pre-wrap; /* Keeps words together while properly rendering spaces */
+  z-index: 20;
+  pointer-events: none; /* Let clicks pass through to background */
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6); /* Makes text highly readable against photos */
+}
+
+.animated-heart {
+  display: inline-block;
+  margin-left: 6px;
+  animation: heartbeat 1.5s infinite ease-in-out;
+  transform-origin: center;
+}
+
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  15% { transform: scale(1.3); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.3); }
+  60%, 100% { transform: scale(1); }
+}
+/* ========================================================================= */
+/* PREMIUM DESIGN AESTHETICS - GLASSMORPHIC PINK & DOTS BACKDROP             */
+/* ========================================================================= */
+
+.celebrate-backdrop {
+  background: radial-gradient(circle at 50% 50%, #1e0516 0%, #080107 100%);
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Glowing Dynamic Orbs */
+.orbs-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.6;
+  /* Slightly increased opacity since we removed screen blending */
+  will-change: transform;
+  /* hardware layer promotion */
+}
+
+.orb-1 {
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.8) 0%, rgba(219, 39, 119, 0) 70%);
+  top: -5%;
+  left: -5%;
+  animation: floatOrb1 25s infinite alternate ease-in-out;
+}
+
+.orb-2 {
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.7) 0%, rgba(147, 51, 234, 0) 70%);
+  bottom: -10%;
+  right: -5%;
+  animation: floatOrb2 30s infinite alternate ease-in-out;
+}
+
+.orb-3 {
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(244, 63, 94, 0.65) 0%, rgba(225, 29, 72, 0) 70%);
+  top: 55%;
+  left: -10%;
+  animation: floatOrb3 20s infinite alternate ease-in-out;
+}
+
+.orb-4 {
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, rgba(251, 146, 60, 0.5) 0%, rgba(249, 115, 22, 0) 70%);
+  top: 15%;
+  right: 10%;
+  animation: floatOrb1 28s infinite alternate-reverse ease-in-out;
+}
+
+@keyframes floatOrb1 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(120px, 80px, 0) scale(1.15);
+  }
+
+  100% {
+    transform: translate3d(40px, 150px, 0) scale(0.9);
+  }
+}
+
+@keyframes floatOrb2 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(-100px, -120px, 0) scale(0.85);
+  }
+
+  100% {
+    transform: translate3d(-50px, -40px, 0) scale(1.1);
+  }
+}
+
+@keyframes floatOrb3 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(80px, -60px, 0) scale(1.2);
+  }
+
+  100% {
+    transform: translate3d(150px, 20px, 0) scale(0.95);
+  }
+}
+
+/* ========================================================================= */
+/* Tilted & Dissolved Background Pictures                                    */
+/* ========================================================================= */
+
+.background-gallery {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  /* Sits below dots and sparkles, above raw background */
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bg-pic {
+  position: absolute;
+  object-fit: cover;
+  /* Super Soft Melt - Ensures pictures blend into each other without distinct separated edges */
+  -webkit-mask-image: radial-gradient(ellipse at center, black 15%, transparent 65%);
+  mask-image: radial-gradient(ellipse at center, black 15%, transparent 65%);
+  opacity: 0.85;
+  will-change: transform;
+}
+
+/* Clustered closely together so their faded edges physically overlap and melt into one cohesive background */
+.pic-1 {
+  width: 300px;
+  height: 380px;
+  top: 5%;
+  left: -5%;
+  transform: rotate(-12deg);
+  object-position: 70% 50%;
+  /* Wider mask so more of the photo is clearly visible */
+  -webkit-mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%);
+  mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%);
+  opacity: 0.95;
+}
+
+.pic-2 {
+  width: 290px;
+  /* Expanded frame to show more content */
+  height: 380px;
+  top: 0%;
+  /* Moved towards top */
+  right: 2%;
+  /* Pulled inwards to prevent the screen edge from cutting it off */
+  transform: rotate(10deg);
+  /* Custom wider mask to ensure everything in this specific photo is fully visible */
+  -webkit-mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%);
+  mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%);
+}
+
+.pic-3 {
+  width: 250px;
+  height: 300px;
+  bottom: 12%;
+  left: 0%;
+  transform: rotate(-8deg);
+}
+
+.pic-6 {
+  width: 290px;
+  /* Expanded frame to ensure contents fit perfectly */
+  height: 360px;
+  bottom: 5%;
+  /* Moved further towards the bottom */
+  right: -8%;
+  /* Shifted towards the right side as requested */
+  transform: rotate(-15deg);
+  opacity: 0.85;
+  object-position: 30% 50%;
+  /* Shift the photo's internal focus to ensure hands aren't cropped */
+  /* Custom wider mask to ensure everything in this specific photo is fully visible */
+  -webkit-mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%);
+  mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%);
+}
+
+/* Glassmorphic Aesthetic Dot Grid Overlay (Static for zero CPU rendering cost!) */
+.dots-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(244, 63, 94, 0.16) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* Subtle Vignette for Cinema Depth */
+.cinema-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, transparent 30%, rgba(8, 1, 7, 0.75) 100%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Cloche frame styled card removed per user request for an independent cake */
+
+
+/* ========================================================================= */
+/* Twinkling Sparkles and Floating Bokeh Particles                          */
+/* ========================================================================= */
+
+.sparkles-container {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.sparkle-star {
+  position: absolute;
+  width: auto;
+  height: auto;
+  pointer-events: none;
+  animation: sparkleTwinkle infinite ease-in-out;
+  will-change: transform, opacity;
+  /* hardware layer promotion */
+}
+
+@keyframes sparkleTwinkle {
+
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(0.3) rotate(0deg);
+    opacity: 0.1;
+  }
+
+  50% {
+    transform: translate3d(0, 0, 0) scale(1.1) rotate(180deg);
+    opacity: 1;
+  }
+
+  /* Removed expensive drop-shadow filter inside loop */
+}
+
+.bokeh-element {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(244, 63, 94, 0.2) 70%, rgba(244, 63, 94, 0) 100%);
+  pointer-events: none;
+  animation: riseAndFade infinite linear;
+  will-change: transform, opacity;
+  /* hardware layer promotion */
+}
+
+@keyframes riseAndFade {
+  0% {
+    transform: translate3d(0, 120vh, 0) scale(0.5);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.7;
+  }
+
+  90% {
+    opacity: 0.4;
+  }
+
+  100% {
+    transform: translate3d(var(--drift-x, 40px), -10vh, 0) scale(1.2);
+    opacity: 0;
+  }
+}
+
+
+/* ========================================================================= */
+/* Back Button Aesthetics                                                    */
+/* ========================================================================= */
+
+.glass-back-btn {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 100;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.glass-back-btn:hover {
+  background: rgba(236, 72, 153, 0.15);
+  border-color: rgba(236, 72, 153, 0.4);
+  color: #ffffff;
+  transform: translateX(-3px);
+  box-shadow:
+    0 0 15px rgba(236, 72, 153, 0.35),
+    0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.glass-back-btn:active {
+  transform: translateX(-1px) scale(0.95);
+}
+
+
+/* Delayed Elegant Prompt styling removed per user request */
