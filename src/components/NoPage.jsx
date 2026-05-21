@@ -36,11 +36,14 @@ export default function NoPage({ onYes, onNo }) {
   }
 
   function toChars(text, extraClass = '') {
+    // Intl.Segmenter perfectly splits text by graphemes so emojis with skin tones (e.g. 👉🏻) stay grouped!
+    const segmenter = new Intl.Segmenter('en', { granularity: 'grapheme' });
+    
     return text.split(' ').map((word, wordIdx, arr) => (
       <span key={wordIdx} className="inline-block whitespace-nowrap">
-        {[...word].map((ch, chIdx) => (
+        {Array.from(segmenter.segment(word)).map((data, chIdx) => (
           <span key={chIdx} className={`tw-char inline-block ${extraClass}`}>
-            {ch}
+            {data.segment}
           </span>
         ))}
         {wordIdx < arr.length - 1 && (
@@ -70,12 +73,12 @@ export default function NoPage({ onYes, onNo }) {
 
         {/* Line 1 */}
         <p ref={line1Ref} className="text-2xl sm:text-3xl md:text-5xl font-medium text-white/80 leading-snug tracking-tight opacity-0">
-          {toChars('Bola tha na nhi click kalne uspe?? 😒')}
+          {toChars('Bola tha na nhi click kalne uspe?? 👉🏻👈🏻')}
         </p>
 
         {/* Line 2 */}
         <p ref={line2Ref} className="text-xl sm:text-2xl md:text-4xl font-medium text-white/70 leading-snug opacity-0">
-          {toChars('Nhi maana na baat?? 😒')}
+          {toChars('Nhi maana na baat?? 👉🏻👈🏻')}
         </p>
 
         {/* Gold divider */}
@@ -103,14 +106,14 @@ export default function NoPage({ onYes, onNo }) {
             onClick={onYes}
             className="w-full sm:w-auto px-10 py-3 md:px-12 md:py-4 bg-gradient-to-r from-gold to-primary text-black rounded-full font-bold text-lg md:text-xl hover:scale-105 hover:shadow-[0_0_40px_rgba(212,175,55,0.5)] transition-all duration-300"
           >
-            Let's Celebrate 😁
+            Let's Celebrate 🥰
           </button>
 
           <button
             onClick={onNo}
             className="w-full sm:w-auto px-10 py-3 md:px-12 md:py-4 bg-gradient-to-r from-gold to-primary text-black rounded-full font-bold text-lg md:text-xl hover:scale-105 hover:shadow-[0_0_40px_rgba(212,175,55,0.5)] transition-all duration-300"
           >
-            No Celebrations 🙂
+            No Celebrations 😗
           </button>
         </div>
       </div>

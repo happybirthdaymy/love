@@ -325,7 +325,7 @@ export default function CelebratePage() {
               }}
               className="text-white text-3xl md:text-4xl font-bold tracking-[0.2em] text-center px-6 leading-relaxed"
             >
-              {"Happy 17th Birthday Babuaaaa✨️✨️".split(' ').map((word, wordIndex, array) => (
+              {"Happy Waalaaaa 17th Birthday Babuaaaa✨️✨️".split(' ').map((word, wordIndex, array) => (
                 <span key={wordIndex} style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
                   {word.split('').map((char, charIndex) => (
                     <motion.span
